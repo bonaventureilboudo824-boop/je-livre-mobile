@@ -1,5 +1,13 @@
 {
   "appId": "com.jelivre.app",
   "appName": "Je Livre",
-  "webDir": "www"
+  "webDir": "www",
+  "server": {
+    "allowNavigation": [
+      "*.horuspay.africa",
+      "*.horuspay.com",
+      "jelivre.shop",
+      "*.jelivre.shop"
+    ]
+  }
 }
