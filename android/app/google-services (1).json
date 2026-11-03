@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "591301628205",
+    "firebase_url": "https://je-livre-509fd-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "je-livre-509fd",
+    "storage_bucket": "je-livre-509fd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:591301628205:android:34956b940861b40dffc3a4",
+        "android_client_info": {
+          "package_name": "com.jelivre.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJla89KfrGsN3IQfBGF_CNg5PoTkJYTAQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
