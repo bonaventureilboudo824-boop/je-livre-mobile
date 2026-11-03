@@ -24,6 +24,15 @@
 
         </activity>
 
+        <!-- Notifications (Firebase Cloud Messaging) : petite icône blanche dans la barre d'état
+             et canal d'alerte à forte importance (créé par l'application à la connexion). -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_stat_jelivre" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="jl_alerts" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
@@ -46,4 +55,6 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <!-- Vibration légère sur certaines confirmations (si utilisée) -->
     <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- Notifications : autorisation à demander à l'utilisateur à partir d'Android 13 -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 </manifest>
