@@ -36,8 +36,24 @@ jobs:
             if grep -q '"package_name": "com.jelivre.app"' "$GS"; then echo "google-services.json : paquet correct"; else echo "ERREUR : google-services.json ne contient pas le paquet com.jelivre.app."; ok=0; fi
           else echo "AVERTISSEMENT : android/app/google-services.json est absent (les notifications ne marcheront pas)."; fi
           grep -nE "versionCode|versionName" android/app/build.gradle | head -4 || true
+          WEBDIR=$(grep -rhoE "webDir['\"]?[: ]+['\"][^'\"]+['\"]" capacitor.config.* 2>/dev/null | head -1 | grep -oE "['\"][^'\"]+['\"]$" | tr -d "'\"")
+          WEBDIR=${WEBDIR:-www}
+          IDX="$WEBDIR/index.html"
+          if [ ! -f "$IDX" ]; then echo "ERREUR : $IDX est introuvable."; ok=0
+          elif ! grep -q "jlOpenDelete" "$IDX"; then echo "ERREUR : $IDX n'est pas la derniere version (suppression de compte, signalement et conditions absents). Deposez le nouveau index.html dans le dossier $WEBDIR."; ok=0
+          else echo "$IDX : version a jour (conformite Google Play presente)."; fi
+          if ! grep -q "push-notifications" package.json 2>/dev/null; then echo "AVERTISSEMENT : package.json ne contient pas @capacitor/push-notifications (notifications Android absentes)."; fi
           if [ "$ok" != "1" ]; then echo "=> Arret : corrigez les erreurs ci-dessus, puis relancez."; exit 1; fi
           echo "=> Contrôles réussis."
+
+      - name: Numéro de version automatique (chaque envoi à Google doit avoir un numéro plus grand)
+        run: |
+          VC=${{ github.run_number }}
+          sed -i -E "s/(versionCode[ =]+)[0-9]+/\1${VC}/" android/app/build.gradle
+          sed -i -E "s/(versionName[ =]+)\"[^\"]*\"/\1\"1.0.${VC}\"/" android/app/build.gradle
+          grep -nE "versionCode|versionName" android/app/build.gradle
+          grep -qE "versionCode[ =]+${VC}([^0-9]|$)" android/app/build.gradle || { echo "ERREUR : le numéro de version n'a pas pu être appliqué."; exit 1; }
+          echo "=> Version envoyée à Google : numéro ${VC} (1.0.${VC})"
 
       - name: Installer Java (nécessaire pour Gradle)
         uses: actions/setup-java@v4
